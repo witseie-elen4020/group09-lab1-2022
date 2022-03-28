@@ -1,0 +1,111 @@
+\documentclass[conference]{IEEEtran}
+\usepackage[linesnumbered,ruled,vlined]{algorithm2e}
+\usepackage{algpseudocode}
+
+\SetKw{Kw By}{by}
+\begin{document}
+
+\title{Appendix} 
+\maketitle
+
+\begin{algorithm}
+\caption{rank2TensorMult()}
+\SetAlgoLined
+\DontPrintSemicolon
+\state $  Inputs: MatA, MatB; each  of  size  N (n * n) $\;
+       $  Output: MatC  of  size N (n * n) $\;
+       \For{$i\gets0$ \KwTo  $n$}{
+           \For{$j\gets0$ \KwTo  $n$}{
+                  C[i,j] \gets 0 \;
+                \For{$i\gets0$ \KwTo  $n$}{
+                   C[i,j] \gets C[i,j] + A[i,k] * B[k,j]\;  
+                   }
+                \EndFor
+           }
+           \EndFor
+       }
+       \EndFor
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{rank3TensorMult()}
+\SetAlgoLined
+\DontPrintSemicolon
+\state $  Inputs: MatA, MatB; each  of  size  N (n * n) $\;
+       $  Output: MatC  of  size N (n * n) $\;
+       \For{$i\gets0$ \KwTo  $n$}{
+           rank2TensorMult(MatA[i],MatB[i],MatC[i])\;
+       }
+       \EndFor
+\end{algorithm}
+
+\begin{algorithm}
+\caption{rank2TensorMult(): OpenMP}
+\SetAlgoLined
+\DontPrintSemicolon
+\state $  Inputs: MatA, MatB; each  of  size  N (n * n) $\;
+       $  Output: MatC  of  size N (n * n) $\;
+         #pragma \hspace omp \hspace parallel \;
+         #pragma \hspace omp \hspace parallel for\;
+       \For{$i\gets0$ \KwTo  $n$}{
+           \For{$j\gets0$ \KwTo  $n$}{
+                  $C[i,j] \gets 0$ \;
+                \For{$i\gets0$ \KwTo  $n$}{
+                  $ C[i,j] \gets C[i,j] + A[i,k] * B[k,j]$\;
+                }
+                \EndFor
+           }
+           \EndFor
+       }
+       \EndFor
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{rank3TensorMult(): OpenMP}
+\SetAlgoLined
+\DontPrintSemicolon
+\state $  Inputs: MatA, MatB; each  of  size  N (n * n) $\;
+       $  Output: MatC  of  size N (n * n) $\;
+       #pragma \hspace omp \hspace parallel \;
+       #pragma \hspace omp \hspace parallel for\;
+       \For{$i\gets0$ \KwTo  $n$}{
+          $ rank2TensorMult(MatA[i],MatB[i],MatC[i])$\;
+       }
+       \EndFor
+\end{algorithm}
+
+\begin{algorithm}
+\caption{rank2TensorMult(): PThreads}
+\SetAlgoLined
+\DontPrintSemicolon
+\state $  Inputs: num\_of\_threads\;$
+       $  pthread\_t myThreads[num\_of\_threads]$\;
+       \For{$i\gets0$ \KwTo  $num\_of\_threads$}{
+           $pthread\_create(&myThreads[i], NULL, rank2TensorMult, (void)i)$\;
+       }
+       \EndFor
+       \For{$i\gets0$ \KwTo  $num\_of\_threads$}{
+          $ pthread\_join(myThreads[i], NULL)$\;
+       }
+       \EndFor
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{rank3TensorMult(): PThreads}
+\SetAlgoLined
+\DontPrintSemicolon
+\state $  Inputs: num\_of\_threads\;$
+       $  pthread\_t myThreads[num\_of\_thread]$\;
+       \For{$i\gets0$ \KwTo  $num\_of\_threads$}{
+           $pthread\_create(&myThreads[i], NULL, rank3TensorMult, (void)i)$\;
+       }
+       \EndFor
+       \For{$i\gets0$ \KwTo  $num\_of\_threads$}{
+           $pthread\_join(myThreads[i], NULL)$\;
+       }
+       \EndFor
+\end{algorithm}
+\end{document}

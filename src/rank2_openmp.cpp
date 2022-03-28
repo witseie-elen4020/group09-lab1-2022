@@ -8,7 +8,7 @@ int** A;
 int** B;
 int** C;
 
-//default if no input from terminal 
+//default input  inialized if no input from terminal 
 auto matrix_dim = 10;
 auto num_of_threads = omp_get_max_threads();
 
@@ -24,7 +24,7 @@ int main(int argc, char*argv[]){
 		num_of_threads = atoi(argv[2]);
 	}
 	else{
-	 	cout << "Too many or few arguments. Input needs 3 arguments. Default values will be used" << endl;
+	 	cout << "Too many or few arguments. Input 3 arguments. Default values will be used" << endl;
 		matrix_dim = 10;
 		num_of_threads = omp_get_max_threads();
 	}
@@ -77,12 +77,6 @@ void rank2TensorMultOpenMP(){
     	end = omp_get_wtime();
     	cout << "Time taken: " << (end-start) << "s"<<endl;  
 }
-
-
-
-
-
-
 
 
 
